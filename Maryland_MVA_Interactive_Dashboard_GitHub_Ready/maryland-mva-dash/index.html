@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive analysis of Maryland MVA vehicle sales and registrations.">
+  <title>Maryland on the Move | MVA Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+  <header class="hero">
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#top"><span class="brand-mark">MD</span><span>MVA Data Lab</span></a>
+      <div class="nav-links"><a href="#overview">Overview</a><a href="#counties">Counties</a><a href="#methodology">Method</a></div>
+    </nav>
+    <div class="hero-grid" id="top">
+      <div>
+        <p class="eyebrow">Maryland vehicle market intelligence</p>
+        <h1>Maryland<br><em>on the move.</em></h1>
+        <p class="hero-copy">Explore more than two decades of vehicle sales alongside monthly registration snapshots across Maryland jurisdictions.</p>
+      </div>
+      <aside class="hero-note">
+        <span class="pulse" aria-hidden="true"></span>
+        <div><strong>Data coverage</strong><p id="coverageText">Loading official MVA records…</p></div>
+      </aside>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="control-band" aria-label="Dashboard filters">
+      <div class="controls">
+        <label>Analysis year<select id="yearSelect" aria-label="Analysis year"></select></label>
+        <label>Registration geography<select id="countySelect" aria-label="Registration geography"></select></label>
+        <button id="resetButton" type="button">Reset filters</button>
+      </div>
+      <p id="filterNote" class="filter-note" aria-live="polite"></p>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="section-heading"><div><p class="eyebrow">Market pulse</p><h2 id="overviewTitle">2025 at a glance</h2></div><p>Sales are statewide monthly transactions. Registrations are the number of vehicles on record at month end and should not be interpreted as monthly sales.</p></div>
+      <div class="kpi-grid" id="kpiGrid" aria-live="polite"></div>
+      <div class="insight" id="insightText"></div>
+      <div class="chart-grid two-thirds">
+        <article class="panel wide"><div class="panel-head"><div><p class="panel-kicker">Monthly composition</p><h3>New vs. used vehicle sales</h3></div><span class="chart-badge">Units</span></div><div id="salesChart" class="chart" role="img" aria-label="Monthly new and used vehicle sales chart"></div></article>
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">Market value</p><h3>Monthly sales value</h3></div><span class="chart-badge">USD</span></div><div id="valueChart" class="chart" role="img" aria-label="Monthly vehicle sales value chart"></div></article>
+      </div>
+      <article class="panel full"><div class="panel-head"><div><p class="panel-kicker">Long view</p><h3>Annual sales history</h3></div><span class="chart-badge">2002–2026</span></div><div id="historyChart" class="chart history" role="img" aria-label="Annual vehicle sales history chart"></div></article>
+    </section>
+
+    <section class="section alt" id="counties">
+      <div class="section-heading"><div><p class="eyebrow">Registration landscape</p><h2>Where vehicles are registered</h2></div><p>Use the geography filter to compare a jurisdiction with the statewide total. The ranking uses the latest available month in the selected year.</p></div>
+      <div class="chart-grid equal">
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">Latest month</p><h3>County registration ranking</h3></div><span id="rankingBadge" class="chart-badge"></span></div><div id="rankingChart" class="chart tall" role="img" aria-label="County registration ranking chart"></div></article>
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">Monthly stock</p><h3 id="trendTitle">Registration trend</h3></div><span class="chart-badge">Month end</span></div><div id="registrationChart" class="chart tall" role="img" aria-label="Monthly vehicle registration trend chart"></div></article>
+      </div>
+      <article class="panel full"><div class="panel-head"><div><p class="panel-kicker">Combined view</p><h3>Monthly sales vs. registered vehicle stock</h3></div><span class="chart-badge">Shared months</span></div><div id="relationshipChart" class="chart" role="img" aria-label="Scatterplot of monthly sales and registered vehicles"></div><p class="chart-note">This descriptive comparison shows co-movement only. It does not establish that registrations caused sales or that each sale created a new registration.</p></article>
+    </section>
+
+    <section class="section methodology" id="methodology">
+      <div class="section-heading"><div><p class="eyebrow">Read the data responsibly</p><h2>Methodology & limitations</h2></div></div>
+      <div class="method-grid">
+        <article><span>01</span><h3>Cleaned</h3><p>Commas and currency symbols were removed before numeric conversion. Month abbreviations were converted to proper dates.</p></article>
+        <article><span>02</span><h3>Aligned</h3><p>Statewide sales and registrations are joined by month only where both sources contain the same date.</p></article>
+        <article><span>03</span><h3>Preserved</h3><p>Blank county labels after February 2024 continue the prior “NOT MD” series and are shown as “Not MD / Unspecified.”</p></article>
+        <article><span>04</span><h3>Bounded</h3><p>2026 is partial. Registration totals are stocks measured at month end; sales are monthly flows. Correlation is not causation.</p></article>
+      </div>
+      <div class="sources"><h3>Official sources</h3><p>Maryland Department of Transportation Motor Vehicle Administration via Data.gov.</p><a href="https://catalog.data.gov/dataset/mva-vehicle-sales-counts-by-month-for-calendar-year-2002-through-august-2025" target="_blank" rel="noopener">Vehicle sales dataset ↗</a><a href="https://catalog.data.gov/dataset/mva-vehicle-registrations-by-county-as-of-each-month-end-from-january-2023-to-october-2025" target="_blank" rel="noopener">Vehicle registrations dataset ↗</a></div>
+    </section>
+  </main>
+  <footer><p>Analysis and dashboard by Shateara Davis · Built from Maryland open data</p><p id="footerUpdate"></p></footer>
+  <div id="errorState" class="error-state" hidden><strong>Dashboard data could not be loaded.</strong><span>Serve this folder through a local web server or GitHub Pages; opening index.html directly may block data loading.</span></div>
+</body>
+</html>
